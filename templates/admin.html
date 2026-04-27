@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin</title>
+</head>
+<body>
+
+<h2>Admin Dashboard</h2>
+
+<button onclick="loadQueue()">Refresh</button>
+<button onclick="nextCustomer()">Next</button>
+
+<ul id="queueList"></ul>
+
+<script>
+function loadQueue(){
+    fetch('/queue')
+    .then(res => res.json())
+    .then(data => {
+        let list = document.getElementById("queueList");
+        list.innerHTML = "";
+        data.forEach(q => {
+            list.innerHTML += `<li>${q[1]} - Token ${q[3]}</li>`;
+        });
+    });
+}
+
+function nextCustomer(){
+    fetch('/next', {method:'POST'})
+    .then(()=>loadQueue());
+}
+</script>
+
+</body>
+</html>
